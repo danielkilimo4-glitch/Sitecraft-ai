@@ -84,4 +84,84 @@ update();
 </script>
 </body>
   </html>
-  
+  </main>
+
+<section class="container" id="ai-generator">
+  <div class="card">
+    <h2>✨ SiteCraft AI Generator</h2>
+    <p>Describe your dream website and create a starter page.</p>
+
+    <label for="idea">What website do you want?</label>
+    <textarea id="idea" rows="5"
+      placeholder="Example: A modern clothing store in Kenya..."></textarea>
+
+    <button onclick="generateSite()">Generate Website</button>
+
+    <div id="result" style="display:none;margin-top:20px">
+      <h3 id="siteTitle"></h3>
+      <p id="siteDescription"></p>
+      <button onclick="downloadSite()">Download Website</button>
+    </div>
+  </div>
+</section>
+</script>
+
+let generatedHTML = "";
+
+function generateSite() {
+  const idea = document.getElementById("idea").value.trim();
+
+  if (!idea) {
+    alert("Please describe your website first!");
+    return;
+  }
+
+  const title = idea.split(" ").slice(0, 6).join(" ");
+
+  document.getElementById("siteTitle").textContent = title;
+  document.getElementById("siteDescription").textContent = idea;
+  document.getElementById("result").style.display = "block";
+
+  generatedHTML = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${escapeSiteText(title)}</title>
+<style>
+body{font-family:Arial;background:#0b1020;color:white;
+text-align:center;padding:60px 20px}
+h1{font-size:40px;color:#9185ff}
+p{max-width:600px;margin:20px auto;line-height:1.7}
+</style>
+</head>
+<body>
+<h1>${escapeSiteText(title)}</h1>
+<p>${escapeSiteText(idea)}</p>
+</body>
+</html>`;
+}
+
+function escapeSiteText(value) {
+  return value.replace(/[&<>"']/g, char => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",
+    '"':"&quot;","'":"&#39;"
+  }[char]));
+}
+
+function downloadSite() {
+  if (!generatedHTML) return;
+
+  const blob = new Blob([generatedHTML], {
+    type: "text/html"
+  });
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = "my-sitecraft-website.html";
+  link.click();
+
+  URL.revokeObjectURL(url);
+}
