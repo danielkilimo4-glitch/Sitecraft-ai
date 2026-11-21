@@ -147,21 +147,5 @@ function escapeSiteText(value) {
     "&":"&amp;","<":"&lt;",">":"&gt;",
     '"':"&quot;","'":"&#39;"
   }[char]));
-}
 
-function downloadSite() {
-  if (!generatedHTML) return;
 
-  const blob = new Blob([generatedHTML], {
-    type: "text/html"
-  });
-
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-
-  link.href = url;
-  link.download = "my-sitecraft-website.html";
-  link.click();
-
-  URL.revokeObjectURL(url);
-}
