@@ -140,12 +140,6 @@ p{max-width:600px;margin:20px auto;line-height:1.7}
 <p>${escapeSiteText(idea)}</p>
 </body>
 </html>`;
-}
 
-function escapeSiteText(value) {
-  return value.replace(/[&<>"']/g, char => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",
-    '"':"&quot;","'":"&#39;"
-  }[char]));
 
 
